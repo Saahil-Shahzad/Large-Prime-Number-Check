@@ -111,16 +111,20 @@ class PrimeNumberList
         {
             primeComponentNode* temp = head;
 
+            std::cout << "Input (1024-bit number): \"";
             while (temp != nullptr) // iterating through the list
             {
                 std::cout << temp->digits; // displaying the prime component
                 temp = temp->next;  // moving to the next node
             }
+            std::cout << "\"\n";
+
+            std::cout << "Smaller primes: [2, 3, 5, 7, 11,...]\n";
 
             std::cout << std::endl; // new line
         }
 
-        // to generate a random 1024 bits (309 digits) number
+        // to generate a random 1024-bit (309 digits) number
         std::string generateRandom309DigitsNumber()
         {
             std::string random309DigitsNumber = "";    // to store the random number

@@ -1,8 +1,3 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <cctype>
-
 /*
     # Large Prime Number    #
     # Checker in c++        #
@@ -13,6 +8,12 @@
     # 11/4/2024             # 
 
 */
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
+#include <cmath>
 
 // defining a prime number component as a node
 struct primeComponentNode
@@ -149,7 +150,7 @@ class PrimeNumberList
 
                 primeComponent += c;    // adding the digit to the prime component
 
-                if (digitCounter == 9)  // if 9 digits have been stored in the component, add the component to the list and reset the counter
+                if (digitCounter == 4)  // if 9 digits have been stored in the component, add the component to the list and reset the counter
                 {
                     insertPrimeComponentAtEnd(std::stoi(primeComponent));    // adding the prime component to the list
 
@@ -158,15 +159,78 @@ class PrimeNumberList
             }
         }
 
-        void validatePrimeNumber()
+        std::string listToString(PrimeNumberList list)
+        {
+            std::string primeNumber = "";    // to store the prime number
+
+            primeComponentNode* temp = list.head;
+
+            while (temp != nullptr) // iterating through the entire list
+            {
+                primeNumber += std::to_string(temp->digits); // adding the prime component to the prime number
+                temp = temp->next;  // moving to the next node
+            }
+
+            return primeNumber; // returning the prime number
+        }
+
+        // to check the primality of the number
+        bool validatePrimeNumber(PrimeNumberList primeNumberList)
         {
             if (isEmpty())  // if list is empty, inform and return
             {
                 std::cout << "Nothing to validate.\n";
-                return;
+                return false;   // "nothing" is not a prime number
             }
 
+            // !!! this implementation is not working, it terminates with an error of "std::out_of_range" because the number is too large to fit in primitive datatypes
 
+            // std::string primeNumber = listToString(primeNumberList);    // converting the list to a string
+
+            // for (int i = 2; i <= std::sqrt(std::stoi(primeNumber)); i++)
+            // {
+            //     if (std::stoi(primeNumber) % i == 0)   // if the number is divisible by any number other than 1 and itself, it is not prime
+            //     {
+            //         return false;
+            //     }
+            // }
+
+            primeComponentNode* temp = head;
+
+            // to be used in the loops below
+            bool lastNodePrimality;
+            bool secondLastNodePrimality;
+
+
+            while(temp->next->next != nullptr)    // making temp point to the second last node
+            {
+                temp = temp->next;
+            }
+
+            for (int i = 2; i <= std::sqrt(temp->digits); i++)
+            {
+                if ((temp->digits) % i == 0)   // if the number is divisible by any number other than 1 and itself, it is not prime
+                {
+                    secondLastNodePrimality = false;
+                }
+            }
+
+            while(temp->next != nullptr)    // making temp point to the last node
+            {
+                temp = temp->next;
+            }
+
+            for (int i = 2; i <= std::sqrt(temp->digits); i++)
+            {
+                if ((temp->digits) % i == 0)   // if the number is divisible by any number other than 1 and itself, it is not prime
+                {
+                    lastNodePrimality = true;
+                }
+            }
+
+            bool result = lastNodePrimality && secondLastNodePrimality;     // to determine probabilistically   
+
+            return result;
         }
 };
 
@@ -179,7 +243,7 @@ int main()
 
     primeNumberList.display();    // displaying the prime number
 
-    primeNumberList.validatePrimeNumber();    // validating the prime number
+    std::cout << (primeNumberList.validatePrimeNumber(primeNumberList) ? "True\n" : "False\n");    // validating the prime number
 
     return 0;
 }

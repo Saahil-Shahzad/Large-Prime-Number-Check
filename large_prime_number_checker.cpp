@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
 
 /*
     # Large Prime Number    #
@@ -115,6 +118,48 @@ class PrimeNumberList
             }
 
             std::cout << std::endl; // new line
+        }
+
+        // to read the large prime number
+        std::string readPrimeNumber()
+        {
+            std::string primeNumber = "";   // to store the prime number
+            
+            do
+            {
+                std::cout << "Enter the large prime number: ";    // prompt for the prime number
+                std::cin >> primeNumber;    // reading the prime number
+
+            } while (!isNumeric(primeNumber));  // ensuring only numeric input
+        
+            return primeNumber; // returning the prime number
+        }
+
+        // to check whether the string contains only digits
+        bool isNumeric(std::string& str)
+        {
+            return std::all_of(str.begin(), str.end(), ::isdigit);
+        }
+
+        // to store the prime number into the list
+        void storeStringIntoPrimeNumberList(std::string primeNumber)
+        {
+            int digitCounter = 0;   // to count the digits getting stored into the prime component
+            std::string primeComponent = "";    // to store the digits as a prime component
+
+            for (char c : primeNumber)
+            {
+                digitCounter++; // incrementing the digit counter
+
+                primeComponent += c;    // adding the digit to the prime component
+
+                if (digitCounter == 9)  // if 9 digits have been stored in the component, add the component to the list and reset the counter
+                {
+                    insertPrimeComponentAtEnd(std::stoi(primeComponent));    // adding the prime component to the list
+
+                    digitCounter = 0;    // resetting the digit counter
+                }
+            }
         }
 };
 

@@ -52,7 +52,7 @@ class PrimeNumberList
 
             primeComponentNode* newNode = new primeComponentNode(primeComponent);
 
-            if (!head)  // if list is empty, make new node the head  
+            if (isEmpty())  // if list is empty, make new node the head  
             {
                 head = newNode;
                 newNode = nullptr;
@@ -120,25 +120,17 @@ class PrimeNumberList
             std::cout << std::endl; // new line
         }
 
-        // to read the large prime number
-        std::string readPrimeNumber()
+        // to generate a random 1024 bits (309 digits) number
+        std::string generateRandom309DigitsNumber()
         {
-            std::string primeNumber = "";   // to store the prime number
-            
-            do
+            std::string random309DigitsNumber = "";    // to store the random number
+
+            for (int i = 0; i < 309; i++)   // generating 309 digits
             {
-                std::cout << "Enter the large prime number: ";    // prompt for the prime number
-                std::cin >> primeNumber;    // reading the prime number
+                random309DigitsNumber += std::to_string(rand() % 10);    // adding a random digit to the number
+            }
 
-            } while (!isNumeric(primeNumber));  // ensuring only numeric input
-        
-            return primeNumber; // returning the prime number
-        }
-
-        // to check whether the string contains only digits
-        bool isNumeric(std::string& str)
-        {
-            return std::all_of(str.begin(), str.end(), ::isdigit);
+            return random309DigitsNumber;   // returning the random number
         }
 
         // to store the prime number into the list
@@ -161,11 +153,29 @@ class PrimeNumberList
                 }
             }
         }
+
+        void validatePrimeNumber()
+        {
+            if (isEmpty())  // if list is empty, inform and return
+            {
+                std::cout << "Nothing to validate.\n";
+                return;
+            }
+
+
+        }
 };
 
 
 int main()
 {   
+    PrimeNumberList primeNumberList;    // creating the prime number list
+
+    primeNumberList.storeStringIntoPrimeNumberList(primeNumberList.generateRandom309DigitsNumber());    // reading and storing the prime number
+
+    primeNumberList.display();    // displaying the prime number
+
+    primeNumberList.validatePrimeNumber();    // validating the prime number
 
     return 0;
 }
